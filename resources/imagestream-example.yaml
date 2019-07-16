@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  name: hello-openshift
+spec:
+  tags:
+  - from:
+      kind: DockerImage
+      name: docker.io/pittar/hello-openshift
+    name: latest
+    importPolicy:
+      scheduled: true
