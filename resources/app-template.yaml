@@ -27,8 +27,8 @@ objects:
   metadata:
     name: frontend-cm
   data:
-    server.port: "8080"
-    service.random.url: http://backend:8080
+    server_port: "8080"
+    service_random_url: "http://backend:8080"
   kind: ConfigMap
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
