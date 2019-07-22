@@ -25,3 +25,16 @@ oc tag docker.io/pittar/springboot-frontend:latest springboot-frontend:latest --
 # Add the app template to dev and uat projects.
 oc apply -f resources/app-template.yaml -n app-dev
 oc apply -f resources/app-template.yaml -n app-qa
+
+# If you want to add Nexus.  Using Nexus 2 simply because it takes fewer resources.
+# oc process -n cicd -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus2-persistent-template.yaml \
+#     | oc create -n cicd -f -
+
+# To add SonarQube.
+# oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=7.0 -n cicd
+
+# To add Dependency Track.
+# oc new-app -f https://raw.githubusercontent.com/pittar/openshift-dependency-track/master/dependency-track.yaml -n cicd
+
+# Start an ephemeral Jenkins master with dependency track plugin installed.
+# oc new-app jenkins-ephemeral --env=INSTALL_PLUGINS=dependency-track:2.1.0 -n cicd
