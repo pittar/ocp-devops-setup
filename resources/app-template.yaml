@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: demo-app-example 
+  name: demo-app-template 
   annotations:
     openshift.io/display-name: "Demo App Example with Database" 
     description: >-
