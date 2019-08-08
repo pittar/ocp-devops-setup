@@ -57,6 +57,7 @@ objects:
       spec:
         containers:
         - name: backend
+          image: "cicd/$BACKEND_IMAGE"
           imagePullPolicy: Always
           ports:
           - containerPort: 8778
@@ -104,11 +105,12 @@ objects:
         name: frontend
       spec:
         containers:
-        - envFrom:
+        - name: frontend
+          image: "cicd/$FRONTEND_IMAGE"
+          envFrom:
             - configMapRef:
                 name: frontend-cm
           imagePullPolicy: Always
-          name: frontend
           ports:
           - containerPort: 8778
             name: jolokia
