@@ -24,12 +24,12 @@ labels:
   app: "demo-app"
 objects:
 - apiVersion: v1
+  kind: ConfigMap
   metadata:
     name: frontend-cm
   data:
     server_port: "8080"
     service_random_url: "http://backend:8080"
-  kind: ConfigMap
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
@@ -57,7 +57,7 @@ objects:
       spec:
         containers:
         - name: backend
-          image: "cicd/$BACKEND_IMAGE"
+          image: "cicd/${BACKEND_IMAGE}:${BACKEND_TAG}"
           imagePullPolicy: Always
           ports:
           - containerPort: 8778
@@ -76,7 +76,7 @@ objects:
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
-        terminationGracePeriodSeconds: 75
+        terminationGracePeriodSeconds: 30
     test: false
     triggers: {}
 - apiVersion: apps.openshift.io/v1
@@ -106,7 +106,7 @@ objects:
       spec:
         containers:
         - name: frontend
-          image: "cicd/$FRONTEND_IMAGE"
+          image: "cicd/${FRONTEND_IMAGE}:${FRONTEND_TAG}"
           envFrom:
             - configMapRef:
                 name: frontend-cm
