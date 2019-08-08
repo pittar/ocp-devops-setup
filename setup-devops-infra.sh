@@ -23,9 +23,11 @@ echo "Services in QA can pull images from CI/CD."
 
 # Spin up DevOps tools.
 # Using Nexus 2 simply because it takes fewer resources.
-#oc process -n cicd -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus2-persistent-template.yaml | oc create -n cicd -f -
+oc process -n cicd -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus2-persistent-template.yaml | oc create -n cicd -f -
+
 # SonarQube.
-#oc new-app -f https://raw.githubusercontent.com/pittar/sonarqube-openshift-docker/master/sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=7.0 -n cicd
+oc new-app -f https://raw.githubusercontent.com/pittar/sonarqube-openshift-docker/master/sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=7.0 -n cicd
+
 # Dependency Track.
 #oc new-app -f https://raw.githubusercontent.com/pittar/openshift-dependency-track/master/dependency-track.yaml -n cicd
 
