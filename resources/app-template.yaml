@@ -180,11 +180,21 @@ objects:
       weight: 100
     wildcardPolicy: None
 parameters:
+  - name: BACKEND_IMAGE 
+    displayName: Backend image
+    description: The backend image to use. 
+    value: backend
+    required: true
   - name: BACKEND_TAG 
     displayName: Backend image tag
     description: The tag (version) of the backend image to use. 
     value: latest
     required: true
+  - name: FRONTEND_IMAGE
+    displayName: Frontend image
+    description: The frontend image to use. 
+    value: frontend
+    required: true 
   - name: FRONTEND_TAG 
     displayName: Frontend image tag
     description: The tag (version) of the frontend image to use. 
