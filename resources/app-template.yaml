@@ -77,17 +77,7 @@ objects:
         securityContext: {}
         terminationGracePeriodSeconds: 75
     test: false
-    triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - backend
-        from:
-          kind: ImageStreamTag
-          name: springboot-backend:${BACKEND_TAG}
-          namespace: cicd
-      type: ImageChange
-    - type: ConfigChange
+    triggers: {}
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
@@ -138,17 +128,7 @@ objects:
         securityContext: {}
         terminationGracePeriodSeconds: 75
     test: false
-    triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - frontend
-        from:
-          kind: ImageStreamTag
-          name: springboot-frontend:${FRONTEND_TAG}
-          namespace: cicd
-      type: ImageChange
-    - type: ConfigChange
+    triggers: {}
 - apiVersion: v1
   kind: Service
   metadata:

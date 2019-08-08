@@ -29,8 +29,13 @@ oc policy add-role-to-user system:image-puller system:serviceaccount:app-qa -n c
 echo "Services in QA can pull images from CI/CD."
 
 # Create ImageStreams for the frontend and backend images.
-oc tag docker.io/pittar/springboot-backend:latest springboot-backend:latest --scheduled=true -n cicd
-oc tag docker.io/pittar/springboot-frontend:latest springboot-frontend:latest --scheduled=true -n cicd
+# oc tag docker.io/pittar/springboot-backend:latest springboot-backend:latest --scheduled=true -n cicd
+# oc tag docker.io/pittar/springboot-frontend:latest springboot-frontend:latest --scheduled=true -n cicd
+
+# Add the build template then create two builds.
+oc apply -f resources/build-template.yaml -n cicd
+oc process jenkins-pipeline -p APP_NAME=frontend -p GIT_SOURCE_URL=https://github.com/pittar/springboot-frontend -n cicd | oc create -n cicd -f -
+oc process jenkins-pipeline -p APP_NAME=backend -p GIT_SOURCE_URL=https://github.com/pittar/springboot-backend -n cicd | oc create -n cicd -f -
 
 # Add the app template to dev and uat projects.
 oc apply -f resources/app-template.yaml -n app-dev
