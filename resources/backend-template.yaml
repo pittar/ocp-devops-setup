@@ -1,0 +1,111 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: demo-app-backend-template 
+  annotations:
+    openshift.io/display-name: "Demo App Example: Back End App" 
+    description: >-
+      Back End App
+
+      An example application with a Spring Boot front end, Spring Boot back end, and database (PostgreSQL)
+      to persist data.
+
+      This app simply illustrates how to create a multi-pod template. 
+    openshift.io/long-description: >-
+      This template defines resources needed to deploy a simple demo app.
+      This template consists of just the back end app. 
+    tags: "quickstart,java,demo" 
+    iconClass: icon-openjdk 
+    openshift.io/provider-display-name: "Nbody, Inc." 
+    openshift.io/documentation-url: "https://github.com/pittar/ocp-devops-setup" 
+    openshift.io/support-url: "https://google.ca" 
+message: "Your app is being instantiated."
+labels:
+  template: "demo-app-backend-example" 
+  app: "demo-app-backend"
+objects:
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    name: backend
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      deploymentConfig: backend
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          deploymentConfig: backend
+        name: backend
+      spec:
+        containers:
+        - name: backend
+          image: "cicd/${BACKEND_IMAGE}:${BACKEND_TAG}"
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8778
+            name: jolokia
+            protocol: TCP
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          - containerPort: 8443
+            name: https
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: backend
+  spec:
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deploymentConfig: backend
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    name: backend
+  spec:
+    to:
+      kind: Service
+      name: backend
+      weight: 100
+    wildcardPolicy: None
+parameters:
+  - name: IMAGE_NAME 
+    displayName: Backend image
+    description: The backend image to use. 
+    value: backend
+    required: true
+  - name: IMAGE_TAG 
+    displayName: Backend image tag
+    description: The tag (version) of the backend image to use. 
+    value: latest
+    required: true

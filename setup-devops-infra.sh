@@ -33,17 +33,18 @@ oc new-app -f https://raw.githubusercontent.com/pittar/sonarqube-openshift-docke
 
 # Add build and app templates to cicd.
 oc apply -f resources/build-template.yaml -n cicd
-oc apply -f resources/app-template.yaml -n cicd
+oc apply -f resources/backend-template.yaml -n cicd
+oc apply -f resources/frontend-template.yaml -n cicd
 echo "Added build template and app template."
 
 # Create app deployments in DEV and QA.
-oc process demo-app-template -n cicd | oc create -n app-dev -f -
-oc process demo-app-template -n cicd | oc create -n app-qa -f -
-echo "Created deployments.  Wait 5 seconds then cancel since there are no images yet."
-sleep 5
-oc rollout cancel dc/backend -n app-dev && oc rollout cancel dc/frontend -n app-dev
-oc rollout cancel dc/backend -n app-qa && oc rollout cancel dc/frontend -n app-qa
-echo "Instantiated app in DEV and QA."
+#oc process demo-app-template -n cicd | oc create -n app-dev -f -
+#oc process demo-app-template -n cicd | oc create -n app-qa -f -
+#echo "Created deployments.  Wait 5 seconds then cancel since there are no images yet."
+#sleep 5
+#oc rollout cancel dc/backend -n app-dev && oc rollout cancel dc/frontend -n app-dev
+#oc rollout cancel dc/backend -n app-qa && oc rollout cancel dc/frontend -n app-qa
+#echo "Instantiated app in DEV and QA."
 
 # Create the frontend and backend builds.
 oc process jenkins-pipeline -p APP_NAME=frontend -p GIT_SOURCE_URL=https://github.com/pittar/springboot-frontend -n cicd | oc create -n cicd -f -
