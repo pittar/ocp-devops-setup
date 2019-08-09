@@ -58,7 +58,6 @@ objects:
       spec:
         containers:
         - name: frontend
-          image: "cicd/${IMAGE_NAME}:${IMAGE_TAG}"
           envFrom:
             - configMapRef:
                 name: frontend-cm
@@ -82,7 +81,16 @@ objects:
         securityContext: {}
         terminationGracePeriodSeconds: 75
     test: false
-    triggers: {}
+    triggers:
+    - imageChangeParams:
+        automatic: false
+        containerNames:
+        - frontend
+        from:
+          kind: ImageStreamTag
+          name: ${IMAGE_NAME}:${IMAGE_TAG}
+          namespace: cicd
+      type: ImageChange
 - apiVersion: v1
   kind: Service
   metadata:

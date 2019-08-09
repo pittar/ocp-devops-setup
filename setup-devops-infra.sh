@@ -51,8 +51,8 @@ oc process jenkins-pipeline -p APP_NAME=frontend -p GIT_SOURCE_URL=https://githu
 oc process jenkins-pipeline -p APP_NAME=backend -p GIT_SOURCE_URL=https://github.com/pittar/springboot-backend -n cicd | oc create -n cicd -f -
 
 # Grant Jenkins service account access to dev and qa projects.
-oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n app-dev
-oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n app-qa
+oc policy add-role-to-user admin system:serviceaccount:cicd:jenkins -n app-dev
+oc policy add-role-to-user admin system:serviceaccount:cicd:jenkins -n app-qa
 
 # Create ImageStreams for the frontend and backend images.
 # oc tag docker.io/pittar/springboot-backend:latest springboot-backend:latest --scheduled=true -n cicd
