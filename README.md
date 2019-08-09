@@ -24,3 +24,11 @@ Accept the defaults by clicking **Create**.  Your application should now be star
 * A backend Spring Boot app that serves a single REST endpoint through a `Service`.
 * A frontend Spring Boot app that consumes the backend REST endpoing through the service.  It also has a `Service` that is exposed externally as a `Route`.
 * Configuration for the frontend app (port that is expoesed as well as the URL to use for the backend app) is configured with a `ConfigMap` called `frontend-cm` and is injected into the frontend container as environment variables.
+
+# Setup Jenkins to use Nexus
+
+* Open Jenkins from the URL exposed by the Jenkins route in the CI/CD project.  Login with your OpenShift credentials.
+* Click "Manage Jenkins" from the left menu.
+* Scroll down and click "Conifigure System".
+* Search for "Kubernetes Pod Template".  In the "Container Template" section, add an environment variable with key=`MAVEN_MIRROR_URL` and value=`http://nexus:8081/content/groups/public`
+* Click **Save**

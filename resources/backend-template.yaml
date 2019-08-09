@@ -51,7 +51,6 @@ objects:
       spec:
         containers:
         - name: backend
-          image: "cicd/${BACKEND_IMAGE}:${BACKEND_TAG}"
           imagePullPolicy: Always
           ports:
           - containerPort: 8778
@@ -72,7 +71,16 @@ objects:
         securityContext: {}
         terminationGracePeriodSeconds: 30
     test: false
-    triggers: {}
+    triggers:
+    - imageChangeParams:
+        automatic: false
+        containerNames:
+        - frontend
+        from:
+          kind: ImageStreamTag
+          name: ${IMAGE_NAME}:${IMAGE_TAG}
+          namespace: cicd
+      type: ImageChange
 - apiVersion: v1
   kind: Service
   metadata:
