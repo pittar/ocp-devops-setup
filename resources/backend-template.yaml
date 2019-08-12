@@ -75,7 +75,7 @@ objects:
     - imageChangeParams:
         automatic: false
         containerNames:
-        - frontend
+        - backend
         from:
           kind: ImageStreamTag
           name: ${IMAGE_NAME}:${IMAGE_TAG}

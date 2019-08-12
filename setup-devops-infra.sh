@@ -26,7 +26,7 @@ oc policy add-role-to-user system:image-puller system:serviceaccount:app-qa:defa
 echo "Services in QA can pull images from CI/CD."
 
 # Start Jenkins Persistent
-oc new-app openshift/jenkins-persistent -n cicd
+oc new-app openshift/jenkins-persistent -e INSTALL_PLUGINS=dependency-track:2.1.0 -n cicd
 echo "Launching Jenkins."
 
 # Spin up DevOps tools.
