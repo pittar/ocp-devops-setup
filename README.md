@@ -32,3 +32,19 @@ Accept the defaults by clicking **Create**.  Your application should now be star
 * Scroll down and click "Conifigure System".
 * Search for "Kubernetes Pod Template".  In the "Container Template" section, add an environment variable with key=`MAVEN_MIRROR_URL` and value=`http://nexus:8081/content/groups/public`
 * Click **Save**
+
+# Setup Jenkins to use Dependency Track
+
+* Open Dependency Track from the URL exposed by the Dependency Track route in the CI/CD project.
+* The first time you login, use the credentials "admin/admin", then change your password when prompted.
+* Log back in.
+* Go to `Administration -> Access Management -> Teams -> Administrators`
+* Under `API keys`, click the `plus` icon to generate a new API key.  Copy it.
+* Open Jenkins from the URL exposed by the Jenkins route in the CI/CD project.  Login with your OpenShift credentials.
+* Click "Manage Jenkins" from the left menu.
+* Scroll down and click "Conifigure System".
+* Search for `Dependency-Track`
+* For `Dependency-Track URL`: `http://dependency-track:8080`
+* For `API Key`: Paste the API key you copied.
+* Check `Auto Create Projects`
+* Click **Test Connection**.  If this is successful, click **Save**.
