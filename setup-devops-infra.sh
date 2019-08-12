@@ -39,7 +39,7 @@ oc new-app -f https://raw.githubusercontent.com/pittar/sonarqube-openshift-docke
 echo "Launching SonarQube."
 
 # Dependency Track.
-#oc new-app -f https://raw.githubusercontent.com/pittar/openshift-dependency-track/master/dependency-track.yaml -n cicd
+oc new-app -f https://raw.githubusercontent.com/pittar/openshift-dependency-track/master/dependency-track.yaml -n cicd
 
 # Grant Jenkins service account access to dev and qa projects.
 oc policy add-role-to-user admin system:serviceaccount:cicd:jenkins -n app-dev
