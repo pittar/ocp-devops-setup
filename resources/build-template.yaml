@@ -28,11 +28,6 @@ parameters:
   generate: expression
   name: GENERIC_WEBHOOK_SECRET
   required: true
-- description: Red Hat OpenJDK image tag to use.
-  displayName: Red Hat OpenJDK Image Tag
-  name: OPENJDK_IMAGE_TAG
-  required: true
-  value: 1.4
 labels:
   template: "demo-app-build-template" 
   app: "demo-app-build"
@@ -96,7 +91,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: redhat-openjdk18-openshift:${OPENJDK_IMAGE_TAG}
+          name: redhat-openjdk18-openshift:1.4
           namespace: openshift
       type: Source
     triggers: []
