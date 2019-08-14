@@ -53,7 +53,7 @@ items:
         memory: 512Mi
       max:
         cpu: 2000m
-        memory: 2Gi
+        memory: 4Gi
       min:
         cpu: 20m
         memory: 256Mi

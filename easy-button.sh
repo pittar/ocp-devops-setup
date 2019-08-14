@@ -4,7 +4,7 @@
 
 # Add three projects:  CI/CD, DEV, and QA.
 oc new-project cicd --display-name="CI/CD Tools" --description="CI/CD Tools and Image Registry."
-oc apply -f resources/cicd-quota.yaml -n cicd
+# oc apply -f resources/cicd-quota.yaml -n cicd
 echo "Created project CI/CD with quota."
 
 oc new-project app-dev --display-name="DEV: App" --description="Development environment for app."
