@@ -39,7 +39,7 @@ echo "Services in QA can pull images from CI/CD."
 oc apply -f resources/jenkins-cm.yaml -n cicd
 
 # Start Jenkins Persistent
-oc new-app openshift/jenkins-persistent -e INSTALL_PLUGINS=structs:1.20,dependency-track:2.1.0 -n cicd
+oc new-app openshift/jenkins-persistent -e INSTALL_PLUGINS=structs:1.17,dependency-track:2.1.0 -n cicd
 echo "Launching Jenkins."
 
 # Spin up DevOps tools.
