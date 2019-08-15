@@ -1,0 +1,61 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: lala-frontend
+  name: lala-frontend
+  namespace: lala-dev
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "lala-frontend:latest"
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    dockerfile: |-
+      FROM lala-nginx-frontend
+      COPY rails /opt/app-root/src
+      COPY nodejs /opt/app-root/src
+    images:
+      - from:
+          kind: ImageStreamTag
+          name: 'lala-rails:latest'
+          namespace: lala-dev
+        paths:
+          - destinationDir: rails
+            sourcePath: /opt/app-root/src/public
+      - from:
+          kind: ImageStreamTag
+          name: 'lala-nodejs:latest'
+          namespace: digihub-dev
+        paths:
+          - destinationDir: nodejs
+            sourcePath: /opt/app-root/src/static
+    type: Dockerfile
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'lala-nginx-frontend:latest'
+    type: Docker
+  successfulBuildsHistoryLimit: 5
+  triggers:
+     - imageChange:
+        from:
+          kind: ImageStreamTag
+          name: 'lala-rails:latest'
+          namespace: lala-dev
+      type: ImageChange
+    - imageChange:
+        from:
+          kind: ImageStreamTag
+          name: 'lala-nodejs:latest'
+          namespace: lala-dev
+      type: ImageChange
+    - type: ConfigChange
+    - imageChange:
+      type: ImageChange
