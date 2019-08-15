@@ -36,7 +36,7 @@ oc policy add-role-to-user system:image-puller system:serviceaccount:app-qa:defa
 echo "Services in QA can pull images from CI/CD."
 
 # Add Jenkins ConfigMap with default env vars (such as MAVEN_MIRROR_URL).
-oc apply -f resources/jenkins-cm.yaml
+oc apply -f resources/jenkins-cm.yaml -n cicd
 
 # Start Jenkins Persistent
 oc new-app openshift/jenkins-persistent -e INSTALL_PLUGINS=structs:1.20,dependency-track:2.1.0 -n cicd
