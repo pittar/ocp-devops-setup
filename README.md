@@ -15,17 +15,7 @@ Run `./setup-devops.sh` to:
 * Create application templates in the CI/CD project for use across dev and qa projects.
 * Instantiate Jenkins (persistent), Sonatype Nexus 2, SonarQube, and Dependency Track.
 
-**Note:** Monitor the CI/CD project and wait for all pods to start before moving on to the next step.
-
-# Setup Jenkins to use Nexus
-
-**Note:** Accessing Jenkins for the first time is *very slow*!  After you login, it may take a few minutes to get to the UI.  This is (unfortuantely) normal.
-
-* Open Jenkins from the URL exposed by the Jenkins route in the CI/CD project.  Login with your OpenShift credentials.
-* Click "Manage Jenkins" from the left menu.
-* Scroll down and click "Conifigure System".
-* Search for "Kubernetes Pod Template".  In the "Container Template" section, add an environment variable with key=`MAVEN_MIRROR_URL` and value=`http://nexus:8081/content/groups/public`
-* Click **Save**
+**Note:** Monitor the CI/CD project and wait for all pods to start before moving on to the next step.  It's not a bad idea to let thing settle for a few minutes even after everything looks like it has started.  Some of the apps still do quite a bit of initialization behind the scenes.
 
 # Setup Jenkins to use Dependency Track
 

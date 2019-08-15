@@ -44,7 +44,7 @@ echo "Launching Jenkins."
 
 # Spin up DevOps tools.
 # Using Nexus 2 simply because it takes fewer resources.
-oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus2-persistent-template.yaml -n cicd
+oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus2-persistent-template.yaml --param=VOLUME_CAPACITY=10Gi -n cicd
 echo "Launching Nexus 2."
 
 # SonarQube.
