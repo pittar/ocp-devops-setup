@@ -7,7 +7,7 @@ A demo DevOps setup with three projects:
 
 # Setup
 
-Run `./setup-devops.sh` to:
+Run `./easy-button.sh` to:
 * Create all projects.
 * Grant `image-puller` access on the CI/CD project to the app-dev and app-qa projects.
 * Grant `admin` access on **dev** and **qa** projects to Jenkins service account.
