@@ -112,6 +112,34 @@ Dependency Track allows you to report on any vulnerabilities in your application
 oc new-app -f https://raw.githubusercontent.com/pittar/openshift-dependency-track/master/dependency-track.yaml -n cicd
 ```
 
+# Selenium Grid for Automated Functional Testing
+
+This next part uses a repository from the Red Hat Open Innovation Labs GithHub space.
+
+(https://github.com/rht-labs)[Red Hat Open Innovation Labs]
+
+This process will build and deploy Selenium Grid, along with Chrome and Firefox nodes.
+
+In your CI/CD project, import the `centos7` base image.
+
+```
+oc tag docker.io/centos/s2i-base-centos7 centos:centos7 -n cicd
+```
+
+Next, clone the repository.
+
+```
+git clone https://github.com/rht-labs/openshift-selenium.git
+cd openshift-selenium
+```
+
+Make sure you are in your CI/CD project, then run the build script.
+
+```
+oc project cicd
+./build-all-openshift.sh
+```
+
 ## Grant Jenkins Admin on DEV and QA Projects
 
 The Jenkins pipelines we will use include instantiating templates in the `DEV` and `QA` projects.  Because of this, we will need to grant the `Jenkins` service account `admin` access on these projects.
