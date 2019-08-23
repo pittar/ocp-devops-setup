@@ -5,7 +5,11 @@ A demo DevOps setup with three projects:
 * DEV - For *dev* version of the project.
 * QA - for *qa* version of the project.
 
-# Setup
+# Setup - DIY
+
+If you would like to go step-by-step and build this environment yourself, please read the [full install guide](full-install.md).
+
+# Setup - The Easy Way
 
 Run `./easy-button.sh` to:
 * Create all projects.
