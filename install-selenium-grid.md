@@ -11,7 +11,7 @@ This process will build and deploy Selenium Grid, along with Chrome and Firefox 
 In your CI/CD project, import the `centos7` base image.
 
 ```
-oc tag docker.io/centos/s2i-base-centos7 centos:centos7
+oc tag docker.io/centos/s2i-base-centos7 centos:centos7 -n cicd
 ```
 
 ## Clone and Run
