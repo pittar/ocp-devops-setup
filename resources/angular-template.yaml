@@ -26,19 +26,19 @@ objects:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: angular-cm
+    name: ${APP_NAME}-cm
   data:
     server_port: "8080"
     service_random_url: "http://backend:8080"
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
-    name: angular
+    name: ${APP_NAME}
   spec:
     replicas: 1
     revisionHistoryLimit: 10
     selector:
-      deploymentConfig: angular
+      deploymentConfig: ${APP_NAME}
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -52,19 +52,16 @@ objects:
     template:
       metadata:
         labels:
-          deploymentConfig: angular
-        name: angular
+          deploymentConfig: ${APP_NAME}
+        name: ${APP_NAME}
       spec:
         containers:
-        - name: angular
+        - name: ${APP_NAME}
           envFrom:
             - configMapRef:
-                name: angular-cm
+                name: ${APP_NAME}-cm
           imagePullPolicy: Always
           ports:
-          - containerPort: 8778
-            name: jolokia
-            protocol: TCP
           - containerPort: 8080
             name: http
             protocol: TCP
@@ -84,7 +81,7 @@ objects:
     - imageChangeParams:
         automatic: false
         containerNames:
-        - angular
+        - ${APP_NAME}
         from:
           kind: ImageStreamTag
           name: ${IMAGE_NAME}:${IMAGE_TAG}
@@ -93,14 +90,14 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: angular
+    name: ${APP_NAME}
   spec:
     ports:
     - port: 8080
       protocol: TCP
       targetPort: 8080
     selector:
-      deploymentConfig: angular
+      deploymentConfig: ${APP_NAME}
     sessionAffinity: None
     type: ClusterIP
   status:
@@ -108,14 +105,19 @@ objects:
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
-    name: angular
+    name: ${APP_NAME}
   spec:
     to:
       kind: Service
-      name: angular
+      name: ${APP_NAME}
       weight: 100
     wildcardPolicy: None
 parameters:
+  - name: APP_NAME
+    displayName: App name
+    description: The name of the app.
+    value: angular-app
+    required: true 
   - name: IMAGE_NAME
     displayName: angular image
     description: The angular image to use. 
