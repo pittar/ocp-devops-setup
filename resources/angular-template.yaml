@@ -1,9 +1,9 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: demo-app-angular-template 
+  name: angular-app-template 
   annotations:
-    openshift.io/display-name: "Demo App Example: Front End App" 
+    openshift.io/display-name: "App Deployment Template: Angular" 
     description: >-
       Angular App
 
@@ -20,8 +20,8 @@ metadata:
     openshift.io/support-url: "https://google.ca" 
 message: "Your app is being instantiated."
 labels:
-  template: "demo-app-angular-template" 
-  app: "demo-app-angular"
+  template: "angular-app-template" 
+  app: "angular"
 objects:
 - apiVersion: v1
   kind: ConfigMap
@@ -119,7 +119,7 @@ parameters:
   - name: IMAGE_NAME
     displayName: angular image
     description: The angular image to use. 
-    value: angular
+    value: angular-app
     required: true 
   - name: IMAGE_TAG 
     displayName: angular image tag
