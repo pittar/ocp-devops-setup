@@ -82,7 +82,7 @@ Next, we will start a persistent instance of Jenkins.  Notice there are a few pl
 
 ```
 # Start Jenkins Persistent
-oc new-app openshift/jenkins-persistent -e INSTALL_PLUGINS=structs:1.18,dependency-track:2.1.0 -n cicd
+oc new-app openshift/jenkins-persistent -e INSTALL_PLUGINS=structs:1.20,dependency-track:2.1.0 -n cicd
 echo "Launching Jenkins."
 ```
 
