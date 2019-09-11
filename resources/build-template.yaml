@@ -51,8 +51,6 @@ objects:
       jenkinsPipelineStrategy:
         jenkinsfilePath: Jenkinsfile
         env:
-          - name: MAVEN_MIRROR_URL
-            value: http://nexus:8081/repository/maven-public/
           - name: APP_NAME
             value: ${APP_NAME}
           - name: GIT_SOURCE_URL
