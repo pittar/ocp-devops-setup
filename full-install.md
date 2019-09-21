@@ -77,9 +77,12 @@ oc apply -f resources/jenkins-cm.yaml -n cicd
 
 Next, we will start a persistent instance of Jenkins.  Notice there are a few plugins listed with the `INSTALL_PLUGINS` environment variable.  By setting this variable, Jenkins will install these plugins when it starts for the first time.  We need dependency-track for a later step.  The `structs` plugin is included so that we can set a specific version (the default verrsion fails withe certain versions of Jenkins).
 
+**Note:** The version of `structs` is highly dependent on the version of Jenkins you are using.  Once your Jenkins pod starts, make sure there are no `SEVERE` errors in the logs that reference the version of structs you have specified.
+
+
 ```
 # Start Jenkins Persistent
-oc new-app openshift/jenkins-persistent -e INSTALL_PLUGINS=structs:1.17,dependency-track:2.1.0 -n cicd
+oc new-app openshift/jenkins-persistent -p VOLUME_CAPACITY=10Gi -e INSTALL_PLUGINS=structs:1.20,dependency-track:2.1.0 -n cicd
 echo "Launching Jenkins."
 ```
 
