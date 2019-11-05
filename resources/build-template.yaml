@@ -29,8 +29,8 @@ parameters:
   name: GENERIC_WEBHOOK_SECRET
   required: true
 labels:
-  template: "demo-app-build-template" 
-  app: "demo-app-build"
+  template: "app-build-template" 
+  app: "app-build"
 objects:
 - apiVersion: v1
   kind: ImageStream

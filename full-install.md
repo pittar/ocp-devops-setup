@@ -26,42 +26,20 @@ oc adm groups new developer
 oc adm groups add-users developer <username>
 ```
 
-## Create the Projects
+## Create the Project
 
-Create the CI/CD, DEV, and QA projects:
+Create the CI/CD project:
 
 ```
 oc new-project cicd --display-name="CI/CD Tools" --description="CI/CD Tools and Image Registry."
 echo "Created project CI/CD."
-
-oc new-project app-dev --display-name="DEV: App" --description="Development environment for app."
-echo "Created project DEV: App."
-
-oc new-project app-qa --display-name="QA: App" --description="QA environment for app."
-echo "Created project QA: App."
 ```
 
-## Grant Developers Access to Projects
+## Grant Developers Access to CI/CD Project
 
 ```
 # Allow developers view access on CI/CD and edit on dev and qa.
 oc adm policy add-role-to-group view developer -n cicd
-oc adm policy add-role-to-group edit developer -n app-dev
-oc adm policy add-role-to-group edit developer -n app-qa
-```
-
-## Allow DEV and QA Projects to Pull from CI/CD
-
-I find it handy to have images kept in one or two projects.  For example, *snapshot* builds would be kept in the `CI/CD` project and *release* builds might be kept in a `image-registry` project.  For the sake of simplicity in this demo, we are going to keep all images in the `CI/CD` project.  This means the `DEV` and `QA` projects are going to need access to the images in `CI/CD`.
-
-```
-# Allow DEV to pull from CI/CD
-oc policy add-role-to-user system:image-puller system:serviceaccount:app-dev:default -n cicd
-echo "Services in DEV can pull images from CI/CD."
-
-# Allow QA to pull from CI/CD
-oc policy add-role-to-user system:image-puller system:serviceaccount:app-qa:default -n cicd
-echo "Services in QA can pull images from CI/CD."
 ```
 
 ## Create a ConfigMap with Jenkins Configuration
@@ -70,7 +48,7 @@ Since we will be using our own Nexus repository, we need to tell our Jenkins Mav
 
 ```
 # Add Jenkins ConfigMap with default env vars (such as MAVEN_MIRROR_URL).
-oc apply -f resources/jenkins-cm.yaml -n cicd
+oc apply -f https://raw.githubusercontent.com/pittar/ocp-devops-setup/ocp4/resources/jenkins-cm.yaml -n cicd
 ```
 
 ## Start Jenkins Persistent
@@ -119,7 +97,7 @@ oc new-app -f https://raw.githubusercontent.com/pittar/openshift-dependency-trac
 
 This next part uses a repository from the Red Hat Open Innovation Labs GithHub space.
 
-(https://github.com/rht-labs)[Red Hat Open Innovation Labs]
+[https://github.com/rht-labs](Red Hat Open Innovation Labs)
 
 This process will build and deploy Selenium Grid, along with Chrome and Firefox nodes.
 
@@ -143,26 +121,24 @@ oc project cicd
 ./build-all-openshift.sh
 ```
 
-## Grant Jenkins Admin on DEV and QA Projects
+## Grant Jenkins Admin Access
 
-The Jenkins pipelines we will use include instantiating templates in the `DEV` and `QA` projects.  Because of this, we will need to grant the `Jenkins` service account `admin` access on these projects.
+The Jenkins pipelines we will use include instantiating templates in the `DEV` and `QA` projects, as well as provisioning the projects themselves.  Because of this, we will need to grant the `Jenkins` service account `self-provisioner` cluster role.
 
 ```
 # Grant Jenkins service account access to dev and qa projects.
-oc policy add-role-to-user admin system:serviceaccount:cicd:jenkins -n app-dev
-oc policy add-role-to-user admin system:serviceaccount:cicd:jenkins -n app-qa
+oc adm policy add-cluster-role-to-user self-provisioner system:serviceaccount:cicd:jenkins -n cicd
 echo "Jenkins granted admin on DEV and QA projects."
 ```
 
 ## Templates!
 
-Time to add templates for build, frontend, and backend.
+Time to add templates for build and backend.
 
 ```
 # Add build and app templates to cicd.
 oc apply -f resources/build-template.yaml -n cicd
 oc apply -f resources/backend-template.yaml -n cicd
-oc apply -f resources/frontend-template.yaml -n cicd
 echo "Added build template and app template."
 ```
 
