@@ -102,7 +102,7 @@ And now SonarQube for code quality / static code analysis.
 
 ```
 # SonarQube.
-oc new-app -f https://raw.githubusercontent.com/pittar/sonarqube-openshift-docker/master/sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=7.0 -n cicd
+oc new-app -f https://raw.githubusercontent.com/pittar/sonarqube-openshift-docker/master/sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=7.0 --param=POSTGRESQL_VERSION=9.6 -n cicd
 echo "Launching SonarQube."
 ```
 
