@@ -70,7 +70,7 @@ The following command stats Nexus.  Make sure you give it lots of storage, or yo
 
 ```
 # Using Nexus 2 simply because it takes fewer resources.
-oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus2-persistent-template.yaml --param=VOLUME_CAPACITY=10Gi -n cicd
+oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus2-persistent-template.yaml --param=VOLUME_CAPACITY=10Gi --param=MAX_MEMORY=2Gi -n cicd
 echo "Launching Nexus 2."
 ```
 
