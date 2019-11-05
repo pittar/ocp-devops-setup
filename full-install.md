@@ -5,13 +5,12 @@
 This is a step-by-step guide to setting up this CI/CD demo.  By the end you will have:
 * Three projects:  CI/CD, DEV: App, QA: App
 * Persistent Jenkins master
-* Angular Jenkins agent
 * Sonatype Nexus 2
 * SonarQube
-* Dependency Track
-* Selenium Grid, with Chrome and FireFox nodes.
+* Dependency Track (if there is time)
+* Selenium Grid, with Chrome and FireFox nodes (if there is time)
 * Jenkins pipeline for both frontend and backend apps.
-* Frontend and Backend apps deployed to both DEV and QA environments.
+* Backend app deployed to both DEV and QA environments.
 
 ## Login as Admin
 
@@ -84,43 +83,6 @@ oc new-app -f https://raw.githubusercontent.com/pittar/sonarqube-openshift-docke
 echo "Launching SonarQube."
 ```
 
-## Start Dependency Track
-
-Dependency Track allows you to report on any vulnerabilities in your applications's dependencies.
-
-```
-# Dependency Track.
-oc new-app -f https://raw.githubusercontent.com/pittar/openshift-dependency-track/master/dependency-track.yaml -n cicd
-```
-
-# Selenium Grid for Automated Functional Testing
-
-This next part uses a repository from the Red Hat Open Innovation Labs GithHub space.
-
-[https://github.com/rht-labs](Red Hat Open Innovation Labs)
-
-This process will build and deploy Selenium Grid, along with Chrome and Firefox nodes.
-
-In your CI/CD project, import the `centos7` base image.
-
-```
-oc tag docker.io/centos/s2i-base-centos7 centos:centos7 -n cicd
-```
-
-Next, clone the repository.
-
-```
-git clone https://github.com/rht-labs/openshift-selenium.git
-cd openshift-selenium
-```
-
-Make sure you are in your CI/CD project, then run the build script.
-
-```
-oc project cicd
-./build-all-openshift.sh
-```
-
 ## Grant Jenkins Admin Access
 
 The Jenkins pipelines we will use include instantiating templates in the `DEV` and `QA` projects, as well as provisioning the projects themselves.  Because of this, we will need to grant the `Jenkins` service account `self-provisioner` cluster role.
@@ -179,6 +141,43 @@ echo "Created backend build and pipeline."
 * You can see the progress from the pipeline screen, or by clicking **View Log** and watching the build logs in Jenkins.
 * If you go to `DEV: App` or `QA: App` before running the pipline you'll notice they are empty.  This is normal.  The first time the pipeline runs it will setup each environment.
 * Subsequent pipeline funs simply "rollout" the new container images to each environemnt.
+
+## Start Dependency Track
+
+Dependency Track allows you to report on any vulnerabilities in your applications's dependencies.
+
+```
+# Dependency Track.
+oc new-app -f https://raw.githubusercontent.com/pittar/openshift-dependency-track/master/dependency-track.yaml -n cicd
+```
+
+# Selenium Grid for Automated Functional Testing
+
+This next part uses a repository from the Red Hat Open Innovation Labs GithHub space.
+
+[https://github.com/rht-labs](Red Hat Open Innovation Labs)
+
+This process will build and deploy Selenium Grid, along with Chrome and Firefox nodes.
+
+In your CI/CD project, import the `centos7` base image.
+
+```
+oc tag docker.io/centos/s2i-base-centos7 centos:centos7 -n cicd
+```
+
+Next, clone the repository.
+
+```
+git clone https://github.com/rht-labs/openshift-selenium.git
+cd openshift-selenium
+```
+
+Make sure you are in your CI/CD project, then run the build script.
+
+```
+oc project cicd
+./build-all-openshift.sh
+```
 
 # Did it work?
 
