@@ -126,7 +126,8 @@ oc project cicd
 The Jenkins pipelines we will use include instantiating templates in the `DEV` and `QA` projects, as well as provisioning the projects themselves.  Because of this, we will need to grant the `Jenkins` service account `self-provisioner` cluster role.
 
 ```
-# Grant Jenkins service account access to dev and qa projects.
+# Grant Jenkins service account access to ci/cd project.
+oc policy add-role-to-user admin system:serviceaccount:cicd:jenkins -n cicd
 oc adm policy add-cluster-role-to-user self-provisioner system:serviceaccount:cicd:jenkins -n cicd
 echo "Jenkins granted admin on DEV and QA projects."
 ```
@@ -137,8 +138,8 @@ Time to add templates for build and backend.
 
 ```
 # Add build and app templates to cicd.
-oc apply -f resources/build-template.yaml -n cicd
-oc apply -f resources/backend-template.yaml -n cicd
+oc apply -f https://raw.githubusercontent.com/pittar/ocp-devops-setup/ocp4/resources/build-template.yaml -n cicd
+oc apply -f https://raw.githubusercontent.com/pittar/ocp-devops-setup/ocp4/resources/backend-template.yaml -n cicd
 echo "Added build template and app template."
 ```
 
@@ -147,10 +148,9 @@ echo "Added build template and app template."
 Create some builds!
 
 ```
-# Create the frontend and backend builds.
-oc new-app cicd/jenkins-pipeline -p APP_NAME=frontend -p GIT_SOURCE_URL=https://github.com/pittar/springboot-frontend -n cicd
-oc new-app cicd/jenkins-pipeline -p APP_NAME=backend -p GIT_SOURCE_URL=https://github.com/pittar/springboot-backend -n cicd
-echo "Created frontend and backend builds and pipelines."
+# Create backend build.
+oc new-app cicd/jenkins-java-pipeline -p APP_NAME=backend -p GIT_SOURCE_URL=https://github.com/pittar/springboot-backend -n cicd
+echo "Created backend build and pipeline."
 ```
 
 **Note:** Monitor the CI/CD project and wait for all pods to start before moving on to the next step.  It's not a bad idea to let thing settle for a few minutes even after everything looks like it has started.  Some of the apps still do quite a bit of initialization behind the scenes.
